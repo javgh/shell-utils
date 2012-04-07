@@ -4,7 +4,7 @@ pidfile="$HOME/.imap_syncer.pid"
 
 # run in background mode unless
 if [ "-foreground" != "$1" ]; then
-    $HOME/bin/imap_syncer.sh -foreground &
+    $HOME/bin/imap_syncer -foreground &
 else
     # kill old instances
     if [ -f "$pidfile" ]; then
