@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd $HOME
+rdiff-backup main /var/autofs/cifs/sharecenter/rdiff-backup/main
+if [ "--fast" != "$1" ]; then
+    rdiff-backup bulk /var/autofs/cifs/sharecenter/rdiff-backup/bulk
+fi
+echo
+echo "--- main ---"
+rdiff-backup -l /var/autofs/cifs/sharecenter/rdiff-backup/main
+echo
+echo "--- bulk ---"
+rdiff-backup -l /var/autofs/cifs/sharecenter/rdiff-backup/bulk
