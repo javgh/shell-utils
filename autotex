@@ -1,0 +1,93 @@
+#!/usr/bin/env ruby
+
+# ruby port of autotex.sh & maketex.sh
+# watches a given file using filewatcher; on changes
+# it runs latex/pdflatex/make and refreshs the viewer
+
+require 'optparse'
+
+def produce_output(texfile, make, dvi)
+    if make then
+        system("make")    # run make
+    else
+        texcmd = "pdflatex"
+        if dvi then
+            texcmd = "latex"
+        end
+        cmd = "#{texcmd} --interaction nonstopmode \"#{texfile}\" | grep ^\\!"
+        system(cmd)    # run latex/pdflatex
+    end
+end
+
+def start_viewer(texfile, dvi)
+    if dvi then
+        output = texfile.gsub(/\.tex$/, '.dvi')
+        puts "Starting xdvi for you (file #{output})"
+
+        system("xdvi \"#{output}\" &")
+    else
+        output = texfile.gsub(/\.tex$/, '.pdf')
+        puts "Starting evince for you (file #{output})"
+
+        system("evince \"#{output}\" &")
+    end
+end
+
+def refresh_viewer(texfile, dvi)
+    if dvi then
+        system("pkill -USR1 xdvi.bin")
+        system("pkill -USR1 xdvi-xaw.bin")
+        system("pkill -USR1 xdvi-motif.bin")
+    end
+end
+
+# find filewatcher tool
+if FileTest.exists?("/user/stud/s05/jav") or FileTest.exists?("/home/ugc/jvornber") then
+    FILEWATCHER = "filewatcher.rb"
+else
+    FILEWATCHER = "filewatcher"
+end
+
+# parse program arguments
+make = false
+dvi = false
+ARGV.options do |opts|
+    opts.banner = "Usage: #{$0} [OPTIONS] <tex file>"
+
+    opts.on("-h", "--help", "show this message") {
+        puts opts
+        exit
+    }
+    opts.on("-m", "--make", TrueClass, "use Makefile to produce output") {
+        |make|
+    }
+    opts.on("-d", "--dvi", TrueClass, "produce DVI instead of PDF") {
+        |dvi|
+    }
+
+    opts.parse!
+end
+
+if ARGV.size != 1 then
+    puts "Usage: #{$0} [-m] [-d] [-h] <tex file>"
+    exit
+end
+texfile = ARGV[0]
+
+# create file for the first time
+produce_output(texfile, make, dvi)
+
+# start viewer
+start_viewer(texfile, dvi)
+
+# main loop
+puts "Starting to watch #{texfile}"
+IO.popen("#{FILEWATCHER} \"#{texfile}\"").each_line do
+    system("clear")
+
+    puts "[*] Running latex/pdflatex/make"
+    produce_output(texfile, make, dvi)
+
+    puts "[*] Refreshing viewer"
+    refresh_viewer(texfile, dvi)
+end

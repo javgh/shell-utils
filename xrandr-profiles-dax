@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 [profile]"
+	echo "  Profiles: dual|mobile|gaming|screencast1280|screencast1024"
+elif [ "$1" = "dual" ]; then
+	xrandr --output LVDS --auto
+	xrandr --output CRT2 --auto
+	xrandr --output CRT2 --right-of LVDS
+elif [ "$1" = "mobile" ]; then
+	xrandr --output LVDS --auto
+	xrandr --output CRT2 --off
+elif [ "$1" = "gaming" ]; then
+	xrandr --output CRT2 --auto
+	xrandr --output LVDS --off
+elif [ "$1" = "screencast1280" ]; then
+	xrandr --output CRT2 --mode 1280x960
+	xrandr --output LVDS --off
+elif [ "$1" = "screencast1024" ]; then
+	xrandr --output CRT2 --mode 1024x768
+	xrandr --output LVDS --off
+fi

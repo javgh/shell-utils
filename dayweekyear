@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# every day, create a new folder for temporary
+# stuff and link to it from ~/day
+week=`date +"%y_%V"`
+day=`LC_ALL="C" date +"%a_%m%d"`
+if [ ! -e "$HOME/year/$week/$day" ]; then
+    mkdir -p $HOME/year/$week/$day
+    rm $HOME/week 2> /dev/null
+    rm $HOME/day 2> /dev/null
+    ln -s "year/$week" $HOME/week
+    ln -s "year/$week/$day" $HOME/day
+fi

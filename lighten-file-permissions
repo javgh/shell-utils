@@ -1,0 +1,4 @@
+#!/bin/sh
+
+find . -exec chmod -v og+r {} \;
+find . -type d -exec chmod -v og+x {} \;

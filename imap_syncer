@@ -1,0 +1,34 @@
+#!/bin/bash
+
+pidfile="$HOME/.imap_syncer.pid"
+
+# run in background mode unless
+if [ "-foreground" != "$1" ]; then
+    $HOME/bin/imap_syncer.sh -foreground &
+else
+    # kill old instances
+    if [ -f "$pidfile" ]; then
+        pid=`cat $pidfile`
+        kill "$pid" &> /dev/null
+    fi
+
+    # create pid file
+    echo $$ > $pidfile
+
+    # main loop
+    while true;
+    do
+        for ((i=0;i<=20;i++))
+        do
+            /usr/bin/offlineimap -c $HOME/.offlineimaprc.fast -u Noninteractive.Basic # Noninteractive.Quiet
+            sleep 180
+        done
+
+        /usr/bin/offlineimap -c $HOME/.offlineimaprc.complete -u Noninteractive.Basic # Noninteractive.Quiet
+        sleep 180
+
+        #if [ -f $HOME/files/mydata/mono/Mutt/tools/scan_maildir.rb ]; then
+        #    $HOME/files/mydata/mono/Mutt/tools/scan_maildir.rb > $HOME/.email_contacts
+        #fi
+    done
+fi
