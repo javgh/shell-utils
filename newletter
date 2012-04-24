@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <identifier>"
+    echo ""
+    echo "Will create folder and letter template"
+    echo "based on current date and identifier."
+    exit 1
+fi
+
+today=$(date +"%Y-%m-%d")
+folder="${today}_$1"
+letter="${folder}/$1_${today}.tex"
+mkdir "$folder"
+cp $HOME/doc/letter_template.tex "$letter"
