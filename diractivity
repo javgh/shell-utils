@@ -9,5 +9,5 @@ if [ -z "$1" ]; then
 fi
 
 while inotifywait -e modify .; do
-    $1
+    "$@"
 done
