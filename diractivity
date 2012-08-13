@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <cmd>"
+    echo ""
+    echo "Will run the given command whenever a"
+    echo "file was changed in the local directory."
+    exit 1
+fi
+
+while inotifywait -e modify .; do
+    "$@"
+done
