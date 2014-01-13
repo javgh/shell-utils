@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while true; do
+    battery_level=`acpi -b | grep -P -o '[0-9]+(?=%)'`
+    if [ $battery_level -gt 40 ]; then
+        set-alarm-background
+        break
+    fi
+    sleep 5
+done
