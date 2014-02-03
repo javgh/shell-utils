@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# set Oracle Java 6 as JDK to avoid
+# problems with tiling window managers
+export IDEA_JDK=/usr/lib/jvm/j2sdk1.6-oracle/
+
+cd $HOME/opt/idea
+./bin/idea.sh
