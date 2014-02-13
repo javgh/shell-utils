@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z "$ANDROID_HOME" ]; then
+    echo "Please set ANDROID_HOME"
+    exit 1
+fi
+
+if [ $# -ne 2 ]; then
+    echo "Usage: `basename $0` <api level> <filename>"
+    exit 1
+fi
+
+basefolder="$ANDROID_HOME/platforms/android-$1/data/res"
+
+for f in $basefolder/drawable-*; do
+    d=$(basename "$f")
+    if [ -f "$f/$2" ]; then
+        mkdir -vp $d
+        cp -v "$f/$2" "$d/$2"
+    fi
+done
