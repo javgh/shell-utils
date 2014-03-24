@@ -1,0 +1,26 @@
+#!/bin/bash
+
+mdpi=32
+hdpi=48
+xhdpi=64
+xxhdpi=96
+
+if [ $# -ne 1 ]; then
+    echo "Usage: `basename $0` <SVG file>"
+    exit 1
+fi
+
+source=$1
+dest=$(basename "$source" ".svg")
+
+mkdir -vp drawable-mdpi
+inkscape -C -w=$mdpi -h=$mdpi -e=drawable-mdpi/$dest.png $source
+
+mkdir -vp drawable-hdpi
+inkscape -C -w=$hdpi -h=$hdpi -e=drawable-hdpi/$dest.png $source
+
+mkdir -vp drawable-xhdpi
+inkscape -C -w=$xhdpi -h=$xhdpi -e=drawable-xhdpi/$dest.png $source
+
+mkdir -vp drawable-xxhdpi
+inkscape -C -w=$xxhdpi -h=$xxhdpi -e=drawable-xxhdpi/$dest.png $source
