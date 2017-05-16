@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # every day, create a new folder for temporary
 # stuff and link to it from ~/day
