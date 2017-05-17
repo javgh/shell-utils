@@ -1,0 +1,3 @@
+#!/bin/sh
+
+offlineimap -c $HOME/.offlineimaprc.complete -u basic
