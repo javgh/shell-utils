@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+getmail -r getmailrc.271
