@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+xfconf-query -c xsettings -p /Net/ThemeName -s "Adwaita-dark"
+if [[ -L "$HOME/.config/termite/config" ]]; then
+    rm $HOME/.config/termite/config
+    ln -s $HOME/.config/termite/dark $HOME/.config/termite/config
+fi
